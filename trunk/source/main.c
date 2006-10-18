@@ -19,6 +19,8 @@
 #include "dsi.h"
 #include "adc.h"
 
+//#define SIGNAL_ANALOG 1; 
+
 uint8_t eeprom_image[512] EEMEM = {
 //		0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
 /* 0000 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -31,17 +33,17 @@ uint8_t eeprom_image[512] EEMEM = {
 /* 0070 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 /* 0080 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 /* 0090 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-/* 00A0 CH1 */	0x00,0x02,0x04,0x06,0x08,0x0b,0x0d,0xff,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-/* 00B0 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-/* 00C0 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-/* 00D0 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-/* 00E0 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-/* 00F0 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-/* 0100 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-/* 0110 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-/* 0120 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-/* 0130 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-/* 0140 CH2 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+/* 00A0 CH1 */	0x00,0x12,0x24,0x36,0x48,0x5a,0x6c,0x7e,0x90,0xa2,0xb4,0xc6,0xd8,0xea,0xff,0xff,
+/* 00B0 */	0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
+/* 00C0 */	0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
+/* 00D0 */	0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
+/* 00E0 */	0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
+/* 00F0 */	0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
+/* 0100 */	0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
+/* 0110 */	0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
+/* 0120 */	0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
+/* 0130 */	0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xea,0xd8,0xc6,
+/* 0140 CH2 */	0xb4,0xa2,0x90,0x7e,0x6c,0x5a,0x48,0x36,0x24,0x12,0x00,0xff,0xf1,0x00,0x00,0x00,
 /* 0150 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 /* 0160 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 /* 0170 */	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -76,14 +78,16 @@ const int8_t menu32_t[][33] PROGMEM = {"< Eintellungen ><     Exit    >>",
 				       "< Eintellungen ><   Relay 1    >",
 				       "< Eintellungen ><   Relay 2    >",
 				       "< Eintellungen ><   Relay 3    >",
-				       "< Eintellungen ><Edit Li. Image>",
-				       "< Eintellungen ><Manuel / Prog.>",
+				       "< Eintellungen ><Edit Prog. Kn1>",
+				       "< Eintellungen >< Steuerung Kn1>",
+				       "< Eintellungen ><Edit Prog. Kn2>",
+				       "< Eintellungen >< Steuerung Kn2>",
 				       "< Eintellungen ><  Speichern   >",
 				       "< Eintellungen ><LCD Helligkeit>",
 				       "< Eintellungen ><   ADC Test   >"};
 
-const int8_t m_info1_32_t[33] PROGMEM = {"xx:xx:xx Mode: MCH1:xxx%CH2:xxx%"};
-const int8_t m_info2_32_t[33] PROGMEM = {"R:M0 R2:M0 R3:M01:xxx 2:xxx S:xx"};
+const int8_t m_info1_32_t[33] PROGMEM = {"xx:xx:xx Mode:MMCH1:xxx%CH2:xxx%"};
+const int8_t m_info2_32_t[33] PROGMEM = {"R:M0 R2:M0 R3:M01:xxx 2:xxx S:MM"};
 const int8_t m_lctrlm32_t[33] PROGMEM = {" Mode:  Manuel  Wert: xxx = xxx%"};
 const int8_t m_lctrlp32_t[33] PROGMEM = {" Mode: Programm   Start: xx:xx  "};
 const int8_t m_lctrle32_t[33] PROGMEM = {" <    Exit    > Current Mode: M "};
@@ -147,9 +151,9 @@ struct relay_timer {
  * memory for 1 channel is enough for 12 hours, 2 minutes, 30 seconds
  * 170 (byte) * 255 = 43350 sekonds (a change per second)
  */
-#define LI_CTRL_MAX	170
+#define LI_CTRL_MAX	171
 #define LI_CTRL_CH1	160
-#define LI_CTRL_CH2	330
+#define LI_CTRL_CH2	331
 #define LI_CTRL_PSCL	25500
 #define LI_CTRL_AUT	1
 #define LI_CTRL_VALID	2
@@ -168,7 +172,7 @@ struct light_image_ctrl {
 	uint16_t step;
 	uint8_t prev;
 	uint8_t next;
-	uint8_t ptr;
+	uint16_t ptr;
 	uint8_t status;
 	uint8_t dimm_value;
 };
@@ -188,7 +192,7 @@ uint8_t cursor_pos;
 void init_timer0(void);
 void init_timer1(void);
 
-#define MENU_MAX 	9
+#define MENU_MAX 	11
 #define MENU_MIN 	0
 int menu_info( struct date_struct *date, struct light_image_ctrl *li_ctrl, 
 		struct relay_timer *relays );
@@ -196,7 +200,7 @@ int set_time_struct( struct date_struct *date );
 int set_time_rcontrol( struct relay_timer *relay );
 int menu_manuel( struct light_image_ctrl *li_ctrl );
 int menu_lcd_intens( volatile uint8_t *intens_value );
-int menu_edit_li( struct light_image_ctrl *li_ctrl );
+int menu_edit_li( struct light_image_ctrl *li_ctrl , uint16_t offset);
 void chk_lictrl_t( struct light_image_ctrl *li_ctrl, 
 	struct date_struct *date, uint16_t tmp_prescl);
 
@@ -207,8 +211,6 @@ extern volatile uint16_t adc_value[ADC_NUMBER];
 char lcd_buffer[LCD_BUFFER_SIZE] = {"Load data from  EEPROM v.0.4 ..."};
 void clear_lcd_buffer(void);
 void lcd_putint8_t( uint8_t position, uint8_t value );
-void calc_value_to_dstruct(struct date_struct *date, uint16_t *value);
-void calc_dstruct_to_value(struct date_struct *date, uint16_t *value);
 #define T_STRUCT_HIGHER		2
 #define T_STRUCT_LOWER		1
 #define T_STRUCT_EQUAL		0
@@ -241,10 +243,10 @@ int menu_info( struct date_struct *date, struct light_image_ctrl *li_ctrl,
 			sprintf(lcd_buffer, "%02d:%02d:%02d", 
 				date->hours, date->minutes, date->seconds);
 			lcd_buffer[8] = ' ';
-			lcd_putint8_t( 20, pgm_read_byte(&dimm_table[li_ctrl->dimm_value]));
-			lcd_putint8_t( 28, pgm_read_byte(&dimm_table[li_ctrl->dimm_value]));
-			if( li_ctrl->status & (1<<LI_CTRL_AUT) ) 
-				lcd_buffer[15] = 'A';
+			lcd_putint8_t( 20, pgm_read_byte(&dimm_table[li_ctrl[0].dimm_value]));
+			lcd_putint8_t( 28, pgm_read_byte(&dimm_table[li_ctrl[1].dimm_value]));
+			if( li_ctrl[0].status & (1<<LI_CTRL_AUT) ) lcd_buffer[15] = 'A';
+			if( li_ctrl[1].status & (1<<LI_CTRL_AUT) ) lcd_buffer[14] = 'A';
 			break;
 		case 2:
 			for(i = 0; i < LCD_BUFFER_SIZE; i ++){
@@ -256,10 +258,20 @@ int menu_info( struct date_struct *date, struct light_image_ctrl *li_ctrl,
 			if( relays[1].status & (1<<R_STATUS_ON) ) lcd_buffer[9] = '1';
 			if( relays[2].status & (1<<R_STATUS_AUT) ) lcd_buffer[14] = 'A';
 			if( relays[2].status & (1<<R_STATUS_ON) ) lcd_buffer[15] = '1';
-			lcd_putint8_t( 18, li_ctrl->dimm_value);
-			lcd_putint8_t( 24, li_ctrl->dimm_value);
-			lcd_buffer[30] = '*';
-			lcd_buffer[31] = '*';
+			lcd_putint8_t( 18, li_ctrl[0].dimm_value);
+			lcd_putint8_t( 24, li_ctrl[1].dimm_value);
+			if( li_ctrl[0].status & (1<<LI_CTRL_AUT) ) {
+				lcd_buffer[30] = 'A';
+				if( li_ctrl[0].status & (1<<LI_CTRL_VALID) ) lcd_buffer[30] = 'V';
+				if( li_ctrl[0].status & (1<<LI_CTRL_UP) ) lcd_buffer[30] = '+';
+				if( li_ctrl[0].status & (1<<LI_CTRL_DOWN) ) lcd_buffer[30] = '-';
+			}
+			if( li_ctrl[1].status & (1<<LI_CTRL_AUT) ) {
+				lcd_buffer[31] = 'A';
+				if( li_ctrl[0].status & (1<<LI_CTRL_VALID) ) lcd_buffer[31] = 'V';
+				if( li_ctrl[1].status & (1<<LI_CTRL_UP) ) lcd_buffer[31] = '+';
+				if( li_ctrl[1].status & (1<<LI_CTRL_DOWN) ) lcd_buffer[31] = '-';
+			}
 			break;
 		case 3:
 			sprintf(lcd_buffer, "ch7=%02d, ch6=%02d, ch5=%02d", 
@@ -267,20 +279,6 @@ int menu_info( struct date_struct *date, struct light_image_ctrl *li_ctrl,
 			break;
 	}
 	return 0;
-}
-
-void calc_dstruct_to_value(struct date_struct *date, uint16_t *value){
-	(*value) = (uint16_t)(date->hours * (uint32_t)3600);
-	(*value) += (uint16_t)(date->minutes * 60);
-	(*value) += (uint16_t)(date->seconds);
-	return;
-}
-
-void calc_value_to_dstruct(struct date_struct *date, uint16_t *value){
-	date->seconds = (*value) % 60;
-	date->minutes = ((*value) / 60) % 60;
-	date->hours = ((*value) / (uint16_t)3600) % 24;
-	return;
 }
 
 int compare_struct( struct date_struct *date1, struct date_struct *date2 ){
@@ -618,7 +616,7 @@ int menu_lcd_intens(volatile uint8_t *intens_value){
 /*
  * edit light control program manual
  */
-int menu_edit_li(struct light_image_ctrl *li_ctrl){
+int menu_edit_li( struct light_image_ctrl *li_ctrl , uint16_t offset){
 	uint32_t tmp1;
 	uint8_t tmp2;
 	uint8_t tmp3;
@@ -650,14 +648,14 @@ int menu_edit_li(struct light_image_ctrl *li_ctrl){
 			lcd_buffer[6] = '>'; lcd_buffer[6 + 9] = '<'; 
 			if( user_keys == KEY_PLUS ) {
 				tmp5 ++;
-				if(tmp5 > LI_CTRL_MAX) tmp5 = 0;
+				if( tmp5 >= LI_CTRL_MAX ) tmp5 = 0;
 			}
 			if( user_keys == KEY_MINUS ) {
 				tmp5 --;
-				if(tmp5 > LI_CTRL_MAX) tmp5 = LI_CTRL_MAX;
+				if( tmp5 >= LI_CTRL_MAX ) tmp5 = LI_CTRL_MAX - 1;
 			}
 			/* read previously dimm value from eeprom */
-			eeprom_ptr = LI_CTRL_CH1 + tmp5;
+			eeprom_ptr = offset + tmp5;
 			tmp4 = eeprom_read_byte((void *)eeprom_ptr);
 		}
 		/* adjust dimm value */
@@ -683,7 +681,7 @@ int menu_edit_li(struct light_image_ctrl *li_ctrl){
 		if( user_keys == KEY_ENTER ) {
 			cursor_pos = 0;
 			/* store value by address pointed with tmp5 + offset */
-			eeprom_ptr = LI_CTRL_CH1 + tmp5;
+			eeprom_ptr = offset + tmp5;
 			eeprom_write_byte((void *) eeprom_ptr, tmp4);
 		}
 		if( user_keys == KEY_PLUS ) {
@@ -805,6 +803,7 @@ void chk_lictrl_t( struct light_image_ctrl *li_ctrl,
 	uint8_t tmp1;
 	uint8_t tmp2;
 	uint16_t tmp3;
+	li_ctrl->status &= ~( 1<<LI_CTRL_VALID );
 	/* check valid time for li_ctrl,
 	 * tmp3 time in seconds */
 	for ( tmp1 = 0; tmp1 <= 12 ; tmp1 ++){
@@ -827,7 +826,7 @@ void chk_lictrl_t( struct light_image_ctrl *li_ctrl,
 			li_ctrl->ptr = (uint8_t)(tmp3 / ((uint16_t)LI_CTRL_PSCL 
 				/ 100));
 			li_ctrl->ptr ++;
-			if( li_ctrl->ptr > LI_CTRL_MAX) break;
+			if( (li_ctrl->ptr + 1) >= LI_CTRL_MAX) break;
 			/* caluculate li_ctrl.step 
 			 * li_ctrl->step = remainder time(seconds) 
 			 * up to the next step */
@@ -844,7 +843,8 @@ void chk_lictrl_t( struct light_image_ctrl *li_ctrl,
 
 int main(void){
 	int8_t i;
-	uint16_t tmp_prescl = 0;
+	uint16_t tmp_prescl_ch1 = 0;
+	uint16_t tmp_prescl_ch2 = 0;
 	uint8_t tmp_prescl1 = 0;
 	uint8_t tmp_prescl2 = 0;
 	uint8_t tmp_prescl3 = 0;
@@ -854,7 +854,7 @@ int main(void){
 	eeprom_ptr = 0;
 	static struct date_struct date;
 	static struct relay_timer relays[3];
-	struct light_image_ctrl li_ctrl;
+	struct light_image_ctrl li_ctrl[2];
 	ocr1al_value = 100;			// lcd intens.
 	ocr1bl_value = 127;			// relay3/dac
 
@@ -870,58 +870,73 @@ int main(void){
 	if( eeprom_read_byte((uint8_t *)eeprom_ptr) == MAGIC_BYTE ) {
 		lcd_print( lcd_buffer, 32);
 		eeprom_ptr ++;
-		eeprom_read_block((void *)&li_ctrl, (void *) eeprom_ptr, sizeof(li_ctrl));
-		eeprom_ptr += sizeof(li_ctrl);
+		eeprom_read_block((void *)&li_ctrl[0], (void *) eeprom_ptr, sizeof(li_ctrl[0]));
+		eeprom_ptr += sizeof(li_ctrl[0]);
 		eeprom_read_block((void *)&relays[0], (void *) eeprom_ptr, sizeof(relays[0]));
 		eeprom_ptr += sizeof(relays[0]);
 		eeprom_read_block((void *)&relays[1], (void *) eeprom_ptr, sizeof(relays[1]));
 		eeprom_ptr = 0;
 		relays[0].status &= ~(1<<R_STATUS_ON);
 		relays[1].status &= ~(1<<R_STATUS_ON);
+//		relays[2].status &= ~(1<<R_STATUS_ON);
+//		li_ctrl[0].status &= ~(1<<LI_CTRL_VALID | 1<<LI_CTRL_AUT);
 	}
-	li_ctrl.ptr = 0;
-	li_ctrl.prev = 0;
-	li_ctrl.next = 0;
-	li_ctrl.step = 0;
-	li_ctrl.begin_t.hours = 0;
-	li_ctrl.begin_t.minutes = 0;
-/* test */
-	li_ctrl.status |= (1<<LI_CTRL_VALID | 1<<LI_CTRL_AUT);
-/* test */
+	li_ctrl[0].ptr = 0;
+	li_ctrl[0].prev = 0;
+	li_ctrl[0].next = 0;
+	li_ctrl[0].step = 0;
+	li_ctrl[0].begin_t.hours = 0;
+	li_ctrl[0].begin_t.minutes = 0;
+	li_ctrl[0].dimm_value = 0;
+
+	li_ctrl[1].ptr = 0;
+	li_ctrl[1].prev = 0;
+	li_ctrl[1].next = 0;
+	li_ctrl[1].step = 0;
+	li_ctrl[1].begin_t.hours = 0;
+	li_ctrl[1].begin_t.minutes = 0;
+	li_ctrl[1].dimm_value = 0;
+/* test */ li_ctrl[0].status |= (1<<LI_CTRL_VALID | 1<<LI_CTRL_AUT);
+/* test */ li_ctrl[1].status |= (1<<LI_CTRL_VALID | 1<<LI_CTRL_AUT);
 	sei();
 	while(1){
 		/* if possible: compute current values for digital or analog signals and send they */
-		if( (uint16_t)((main_time_ms - tmp_prescl)) == li_ctrl.step){
-			tmp_prescl = main_time_ms;
+		if( (uint16_t)((main_time_ms - tmp_prescl_ch1)) == li_ctrl[0].step){
+			tmp_prescl_ch1 = main_time_ms;
 			/* if LI_CTRL_AUT set &&  current time and begin time are equal
 			 * then set LI_CTRL_VALID */
-			if( li_ctrl.status & (1<<LI_CTRL_AUT) ){
-				if( li_ctrl.begin_t.hours == date.hours )
-					if( li_ctrl.begin_t.minutes == date.minutes ){
-						li_ctrl.status |= (1<<LI_CTRL_VALID); 
-						li_ctrl.ptr = 0;
+			if( (li_ctrl[0].status & (1<<LI_CTRL_AUT)) &&
+				!(li_ctrl[0].status & (1<<LI_CTRL_VALID)) ){
+				if( li_ctrl[0].begin_t.hours == date.hours )
+					if( li_ctrl[0].begin_t.minutes == date.minutes ){
+						li_ctrl[0].status |= (1<<LI_CTRL_VALID); 
+						li_ctrl[0].ptr = 0;
 					}
 			}
 			/* if LI_CTRL_AUT && LI_CTRL_VALID set, compute current value
 			 * and send it. */
-			if( li_ctrl.status & (1<<LI_CTRL_VALID | 1<<LI_CTRL_AUT) ){
-				/* if prev == next, set li_ctrl.prev 
-				 * and li_ctrl.next new, calculate step prescaler variable
-				 * li_ctrl.step */
-				if( li_ctrl.prev == li_ctrl.next ){
-					if( li_ctrl.ptr < LI_CTRL_MAX ){ 
-						eeprom_ptr = LI_CTRL_CH1 + li_ctrl.ptr;
-						li_ctrl.prev = eeprom_read_byte((void *)eeprom_ptr);
-						li_ctrl.ptr ++;
-						eeprom_ptr = LI_CTRL_CH1 + li_ctrl.ptr;
-						li_ctrl.next = eeprom_read_byte((void *)eeprom_ptr);
-						if( li_ctrl.prev < li_ctrl.next) {
+			if( li_ctrl[0].status & (1<<LI_CTRL_VALID | 1<<LI_CTRL_AUT) ){
+				/* if prev == next, set li_ctrl[0].prev 
+				 * and li_ctrl[0].next new, calculate step prescaler variable
+				 * li_ctrl[0].step */
+				if( li_ctrl[0].prev == li_ctrl[0].next ){
+					if( li_ctrl[0].ptr < LI_CTRL_MAX ){ 
+						li_ctrl[0].prev = eeprom_read_byte((void *)li_ctrl[0].ptr + LI_CTRL_CH1);
+						li_ctrl[0].ptr ++;
+						li_ctrl[0].next = eeprom_read_byte((void *)li_ctrl[0].ptr + LI_CTRL_CH1);
+						if( li_ctrl[0].prev < li_ctrl[0].next) {
 							/* dimm up */
-							li_ctrl.step = li_ctrl.next - li_ctrl.prev;
+							li_ctrl[0].step = li_ctrl[0].next - li_ctrl[0].prev;
+							li_ctrl[0].status |= (1<<LI_CTRL_UP);
+							li_ctrl[0].status &= ~(1<<LI_CTRL_DOWN);
 						}
 							/* dimm down */
-						else li_ctrl.step = li_ctrl.prev - li_ctrl.next;
-						if( li_ctrl.step ) {
+						else {
+							li_ctrl[0].step = li_ctrl[0].prev - li_ctrl[0].next;
+							li_ctrl[0].status |= (1<<LI_CTRL_DOWN);
+							li_ctrl[0].status &= ~(1<<LI_CTRL_UP);
+						}
+						if( li_ctrl[0].step ) {
 							/* step prescaler = LI_CTRL_PSCL /
 							 * (start_value - end_value),
 							 * example: start = 0,
@@ -929,35 +944,89 @@ int main(void){
 							 * LI_CTRL_PSCL = 25500,
 							 * 25500 / (255 - 0) = 100 ->
 							 * increment variable by 1 each second */
-							li_ctrl.step = LI_CTRL_PSCL / li_ctrl.step;
+							li_ctrl[0].step = LI_CTRL_PSCL / li_ctrl[0].step;
 						}
 						else {
 							/* if new values equal, 
 							 * no action, set step prescaler max.*/
-							li_ctrl.step = LI_CTRL_PSCL;
-							li_ctrl.dimm_value = li_ctrl.prev;
+							li_ctrl[0].step = LI_CTRL_PSCL;
+							li_ctrl[0].dimm_value = li_ctrl[0].prev;
+							li_ctrl[0].status &= ~(1<<LI_CTRL_UP);
+							li_ctrl[0].status &= ~(1<<LI_CTRL_DOWN);
 						}
 					}
 					else {
 						/* light control program ende, reset
-						 * LI_CTRL_VALID, set li_ctrl.step 1s */
-						li_ctrl.status &= ~(1<<LI_CTRL_VALID);
-						li_ctrl.step = 100;
+						 * LI_CTRL_VALID, set li_ctrl[0].step 1s */
+						li_ctrl[0].status &= ~(1<<LI_CTRL_VALID);
+						li_ctrl[0].step = 100;
 					}
 				}
-				if( li_ctrl.prev < li_ctrl.next ){
+				if( li_ctrl[0].prev < li_ctrl[0].next ){
 					/* dimm up */
-					li_ctrl.prev ++;
-					li_ctrl.dimm_value = li_ctrl.prev;
+					li_ctrl[0].prev ++;
+					li_ctrl[0].dimm_value = li_ctrl[0].prev;
 				}
-				if( li_ctrl.prev > li_ctrl.next ){
+				if( li_ctrl[0].prev > li_ctrl[0].next ){
 					/* dimm down */
-					li_ctrl.prev --;
-					li_ctrl.dimm_value = li_ctrl.prev;
+					li_ctrl[0].prev --;
+					li_ctrl[0].dimm_value = li_ctrl[0].prev;
 				}
 			}
 		}
-		/* keys polling */
+		if( (uint16_t)((main_time_ms - tmp_prescl_ch2)) == li_ctrl[1].step){
+			tmp_prescl_ch2 = main_time_ms;
+			if( (li_ctrl[1].status & (1<<LI_CTRL_AUT)) &&
+				!(li_ctrl[1].status & (1<<LI_CTRL_VALID)) ){
+				if( li_ctrl[1].begin_t.hours == date.hours )
+					if( li_ctrl[1].begin_t.minutes == date.minutes ){
+						li_ctrl[1].status |= (1<<LI_CTRL_VALID); 
+						li_ctrl[1].ptr = 0;
+					}
+			}
+			if( li_ctrl[1].status & (1<<LI_CTRL_VALID | 1<<LI_CTRL_AUT) ){
+				if( li_ctrl[1].prev == li_ctrl[1].next ){
+					if( li_ctrl[1].ptr < LI_CTRL_MAX ){ 
+						li_ctrl[1].prev = eeprom_read_byte((void *)li_ctrl[1].ptr + LI_CTRL_CH2);
+						li_ctrl[1].ptr ++;
+						li_ctrl[1].next = eeprom_read_byte((void *)li_ctrl[1].ptr + LI_CTRL_CH2);
+						if( li_ctrl[1].prev < li_ctrl[1].next) {
+							li_ctrl[1].step = li_ctrl[1].next - li_ctrl[1].prev;
+							li_ctrl[1].status |= (1<<LI_CTRL_UP);
+							li_ctrl[1].status &= ~(1<<LI_CTRL_DOWN);
+						}
+						else {
+							li_ctrl[1].step = li_ctrl[1].prev - li_ctrl[1].next;
+							li_ctrl[1].status |= (1<<LI_CTRL_DOWN);
+							li_ctrl[1].status &= ~(1<<LI_CTRL_UP);
+						}
+						if( li_ctrl[1].step ) {
+							li_ctrl[1].step = LI_CTRL_PSCL / li_ctrl[1].step;
+						}
+						else {
+							li_ctrl[1].step = LI_CTRL_PSCL;
+							li_ctrl[1].dimm_value = li_ctrl[1].prev;
+							li_ctrl[1].status &= ~(1<<LI_CTRL_UP);
+							li_ctrl[1].status &= ~(1<<LI_CTRL_DOWN);
+						}
+					}
+					else {
+						li_ctrl[1].status &= ~(1<<LI_CTRL_VALID);
+						li_ctrl[1].step = 100;
+					}
+				}
+				if( li_ctrl[1].prev < li_ctrl[1].next ){
+					li_ctrl[1].prev ++;
+					li_ctrl[1].dimm_value = li_ctrl[1].prev;
+				}
+				if( li_ctrl[1].prev > li_ctrl[1].next ){
+					li_ctrl[1].prev --;
+					li_ctrl[1].dimm_value = li_ctrl[1].prev;
+				}
+			}
+		}
+
+			/* keys polling */
 		if( (uint8_t)(main_time_ms -  tmp_prescl3) == 6 ){
 			tmp_prescl3 = main_time_ms;
 			keys_polling();
@@ -1038,12 +1107,14 @@ int main(void){
 			else {
 			switch ( menu_position ){
 				case 0:
-					if( menu_info( &date, &li_ctrl, relays) ){
+					if( menu_info( &date, li_ctrl, relays) ){
 						menu_entry = 0;
 					}
 					break;
 				case 1:
 					if( set_time_struct( &date ) ){
+						chk_lictrl_t(&li_ctrl[0], &date, tmp_prescl_ch1);
+						chk_lictrl_t(&li_ctrl[1], &date, tmp_prescl_ch2);
 						menu_entry = 0;
 					}
 					break;
@@ -1063,34 +1134,47 @@ int main(void){
 					}
 					break;
 				case 5:
-					if( menu_edit_li(&li_ctrl) ){
+					if( menu_edit_li(&li_ctrl[0], LI_CTRL_CH1) ){
 						menu_entry = 0;
 					}
 					break;
 				case 6:
-					if( menu_manuel(&li_ctrl) ){
-						chk_lictrl_t(&li_ctrl, &date, tmp_prescl);
+					if( menu_manuel(&li_ctrl[0]) ){
+						chk_lictrl_t(&li_ctrl[0], &date, tmp_prescl_ch1);
 						menu_entry = 0;
 					}
 					break;
 				case 7:
-					eeprom_write_byte((uint8_t *) eeprom_ptr, MAGIC_BYTE);
-					eeprom_ptr ++;
-					eeprom_write_block(&li_ctrl, (void *) eeprom_ptr, sizeof(li_ctrl));
-					eeprom_ptr += sizeof(li_ctrl);
-					eeprom_write_block(&relays[0], (void *) eeprom_ptr, sizeof(relays[0]));
-					eeprom_ptr += sizeof(relays[0]);
-					eeprom_write_block(&relays[1], (void *) eeprom_ptr, sizeof(relays[1]));
-					eeprom_ptr = 0;
-					menu_entry = 0;
-					menu_position = 0;
+					if( menu_edit_li(&li_ctrl[1], LI_CTRL_CH2) ){
+						menu_entry = 0;
+					}
 					break;
 				case 8:
-					if( menu_lcd_intens(&ocr1al_value) ){
+					if( menu_manuel(&li_ctrl[1]) ){
+						chk_lictrl_t(&li_ctrl[1], &date, tmp_prescl_ch2);
 						menu_entry = 0;
 					}
 					break;
 				case 9:
+					eeprom_write_byte((uint8_t *) eeprom_ptr, MAGIC_BYTE);
+					eeprom_ptr ++;
+					eeprom_write_block(&li_ctrl[0], (void *) eeprom_ptr, sizeof(li_ctrl[0]));
+					eeprom_ptr += sizeof(li_ctrl[0]);
+					eeprom_write_block(&relays[0], (void *) eeprom_ptr, sizeof(relays[0]));
+					eeprom_ptr += sizeof(relays[0]);
+					eeprom_write_block(&relays[1], (void *) eeprom_ptr, sizeof(relays[1]));
+					eeprom_ptr += sizeof(relays[1]);
+					eeprom_write_block(&relays[2], (void *) eeprom_ptr, sizeof(relays[2]));
+					eeprom_ptr = 0;
+					menu_entry = 0;
+					menu_position = 0;
+					break;
+				case 10:
+					if( menu_lcd_intens(&ocr1al_value) ){
+						menu_entry = 0;
+					}
+					break;
+				case 11:
 					if( menu_test_adc() ){
 						menu_entry = 0;
 					}
@@ -1101,8 +1185,8 @@ int main(void){
 					break;
 			}
 			}
-			dsi_data = li_ctrl.dimm_value;
-			ocr1bl_value = li_ctrl.dimm_value;
+			dsi_data = li_ctrl[0].dimm_value;
+			ocr1bl_value = li_ctrl[1].dimm_value;
 			dsi_send();
 			user_keys = 0;
 			command_lcd( 0x01 );
