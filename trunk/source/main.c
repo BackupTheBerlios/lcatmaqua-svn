@@ -867,6 +867,7 @@ int main(void){
 	/*
 	 * read configuration from EEPROM
 	 */
+/*
 	if( eeprom_read_byte((uint8_t *)eeprom_ptr) == MAGIC_BYTE ) {
 		lcd_print( lcd_buffer, 32);
 		eeprom_ptr ++;
@@ -881,6 +882,7 @@ int main(void){
 //		relays[2].status &= ~(1<<R_STATUS_ON);
 //		li_ctrl[0].status &= ~(1<<LI_CTRL_VALID | 1<<LI_CTRL_AUT);
 	}
+*/
 	li_ctrl[0].ptr = 0;
 	li_ctrl[0].prev = 0;
 	li_ctrl[0].next = 0;
@@ -1156,7 +1158,7 @@ int main(void){
 					}
 					break;
 				case 9:
-					eeprom_write_byte((uint8_t *) eeprom_ptr, MAGIC_BYTE);
+/*					eeprom_write_byte((uint8_t *) eeprom_ptr, MAGIC_BYTE);
 					eeprom_ptr ++;
 					eeprom_write_block(&li_ctrl[0], (void *) eeprom_ptr, sizeof(li_ctrl[0]));
 					eeprom_ptr += sizeof(li_ctrl[0]);
@@ -1165,6 +1167,7 @@ int main(void){
 					eeprom_write_block(&relays[1], (void *) eeprom_ptr, sizeof(relays[1]));
 					eeprom_ptr += sizeof(relays[1]);
 					eeprom_write_block(&relays[2], (void *) eeprom_ptr, sizeof(relays[2]));
+*/
 					eeprom_ptr = 0;
 					menu_entry = 0;
 					menu_position = 0;
